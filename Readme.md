@@ -2,6 +2,11 @@
 
 A production-ready scaffold for building Chrome extensions with React, TypeScript, and Tailwind CSS. Supports both **Popup** and **Side Panel** modes with easy configuration switching.
 
+![Chrome Extension](https://img.shields.io/badge/Chrome%20Extension-Manifest%20V3-blue)
+![React](https://img.shields.io/badge/React-18-61dafb)
+![TypeScript](https://img.shields.io/badge/TypeScript-5.3-3178c6)
+![Tailwind CSS](https://img.shields.io/badge/Tailwind%20CSS-3.3-38bdf8)
+
 ## 🚀 Quick Start
 
 ```bash
