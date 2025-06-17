@@ -7,6 +7,10 @@ A production-ready scaffold for building Chrome extensions with React, TypeScrip
 ![TypeScript](https://img.shields.io/badge/TypeScript-5.3-3178c6)
 ![Tailwind CSS](https://img.shields.io/badge/Tailwind%20CSS-3.3-38bdf8)
 
+![Sidepanel](https://ik.imagekit.io/zhcmdyuhw/sidepanel.png?updatedAt=1750188862629)
+
+![Popup](https://ik.imagekit.io/zhcmdyuhw/popup.png?updatedAt=1750188862413)
+
 ## 🚀 Quick Start
 
 ```bash
