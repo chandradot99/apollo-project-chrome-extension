@@ -3,7 +3,7 @@
   "name": "React TypeScript Chrome Extension",
   "version": "1.0.0",
   "description": "A Chrome extension built with React, TypeScript, and Tailwind CSS (Side Panel Mode)",
-  "permissions": ["activeTab", "storage", "sidePanel"],
+  "permissions": ["activeTab", "tabs", "storage", "sidePanel"],
   "action": {
     "default_title": "Open React Extension Side Panel"
   },
