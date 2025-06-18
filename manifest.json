@@ -8,7 +8,7 @@
     "default_title": "Open React Extension Side Panel"
   },
   "side_panel": {
-    "default_path": "popup.html"
+    "default_path": "index.html"
   },
   "background": {
     "service_worker": "background.js"
