@@ -1,10 +1,11 @@
 // src/app/home.tsx
-import React from 'react';
+import React, { useState } from 'react';
 import { useAuth } from '../hooks/useAuth';
 import { useProjects } from '../hooks/useProjects';
 import ProjectSelector from '../components/ProjectSelector';
 import ArXivParser from '../components/ArXivParser';
 import { ParsedArXivData, convertToArXivPaper } from '../services/arxivService';
+import { exportPaperToProject } from '../services/paperExportService';
 
 const Home: React.FC = () => {
   const { user, loading, error, signIn, signOut, isAuthenticated } = useAuth();
@@ -17,43 +18,55 @@ const Home: React.FC = () => {
     refreshProjects 
   } = useProjects(user);
 
+  const [exportLoading, setExportLoading] = useState(false);
+
   const handleExportPaper = async (paperData: ParsedArXivData) => {
     if (!user || !selectedProject) {
-      alert('Please select a project and ensure you are signed in.');
+      showNotification('Please select a project and ensure you are signed in.', 'error');
       return;
     }
+
+    setExportLoading(true);
 
     try {
       // Convert parsed data to ArXivPaper format
       const arxivPaper = convertToArXivPaper(paperData, user.uid);
       
-      // For now, just show success message - we'll implement Firebase saving later
-      console.log('Paper to be exported:', arxivPaper);
+      // Export to Firebase
+      await exportPaperToProject(selectedProject.projectId, arxivPaper);
       
       // Show success notification
-      const notification = document.createElement('div');
-      notification.className = 'fixed top-4 right-4 z-50 bg-success-500 text-white px-4 py-3 rounded-lg shadow-lg text-sm font-medium';
-      notification.innerHTML = `
-        <div class="flex items-center space-x-2">
-          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-          </svg>
-          <span>Paper exported to ${selectedProject.title}!</span>
-        </div>
-      `;
-      document.body.appendChild(notification);
+      showNotification(`Paper "${paperData.title}" exported to ${selectedProject.title}!`, 'success');
       
-      setTimeout(() => {
-        notification.remove();
-      }, 3000);
-      
-      // TODO: Implement Firebase save functionality
-      // await saveArXivPaperToProject(selectedProject.projectId, arxivPaper);
-      
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error exporting paper:', error);
-      alert('Failed to export paper. Please try again.');
+      showNotification(error.message || 'Failed to export paper. Please try again.', 'error');
+    } finally {
+      setExportLoading(false);
     }
+  };
+
+  const showNotification = (message: string, type: 'success' | 'error') => {
+    const notification = document.createElement('div');
+    const bgColor = type === 'success' ? 'bg-success-500' : 'bg-error-500';
+    const icon = type === 'success' 
+      ? '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>'
+      : '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>';
+    
+    notification.className = `fixed top-4 right-4 z-50 ${bgColor} text-white px-4 py-3 rounded-lg shadow-lg text-sm font-medium max-w-sm`;
+    notification.innerHTML = `
+      <div class="flex items-start space-x-2">
+        <svg class="w-4 h-4 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          ${icon}
+        </svg>
+        <span class="leading-tight">${message}</span>
+      </div>
+    `;
+    document.body.appendChild(notification);
+    
+    setTimeout(() => {
+      notification.remove();
+    }, 5000);
   };
 
   if (loading) {
@@ -249,6 +262,7 @@ const Home: React.FC = () => {
               selectedProject={selectedProject}
               user={user}
               onExportPaper={handleExportPaper}
+              exportLoading={exportLoading}
             />
           </div>
         </div>

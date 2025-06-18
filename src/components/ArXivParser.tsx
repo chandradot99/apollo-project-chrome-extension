@@ -8,12 +8,14 @@ interface ArXivParserProps {
   selectedProject: AssignedProjectWithDetails | null;
   user: User | null;
   onExportPaper?: (paperData: ParsedArXivData) => void;
+  exportLoading?: boolean;
 }
 
 const ArXivParser: React.FC<ArXivParserProps> = ({ 
   selectedProject, 
   user, 
-  onExportPaper 
+  onExportPaper,
+  exportLoading = false
 }) => {
   const [currentUrl, setCurrentUrl] = useState<string>('');
   const [isArXivPage, setIsArXivPage] = useState(false);
@@ -200,9 +202,17 @@ const ArXivParser: React.FC<ArXivParserProps> = ({
               {selectedProject && user && (
                 <button
                   onClick={handleExportPaper}
-                  className="bg-success-500 hover:bg-success-600 text-white text-button font-medium py-2 px-4 rounded-lg transition-colors font-open-sans shadow-button hover:shadow-button-hover"
+                  disabled={exportLoading}
+                  className="bg-success-500 hover:bg-success-600 disabled:bg-success-300 disabled:cursor-not-allowed text-white text-button font-medium py-2 px-4 rounded-lg transition-colors font-open-sans shadow-button hover:shadow-button-hover"
                 >
-                  Export to Project
+                  {exportLoading ? (
+                    <div className="flex items-center space-x-2">
+                      <div className="w-3 h-3 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                      <span>Exporting...</span>
+                    </div>
+                  ) : (
+                    'Export to Project'
+                  )}
                 </button>
               )}
             </div>
