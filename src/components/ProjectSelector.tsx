@@ -1,3 +1,4 @@
+// src/components/ProjectSelector.tsx
 import React from 'react';
 import { AssignedProjectWithDetails } from '../types/project';
 
@@ -18,31 +19,12 @@ const ProjectSelector: React.FC<ProjectSelectorProps> = ({
   error,
   onRefresh,
 }) => {
-  const getDifficultyColor = (difficulty: string) => {
-    switch (difficulty) {
-      case 'Beginner': return 'text-green-600 bg-green-100';
-      case 'Intermediate': return 'text-yellow-600 bg-yellow-100';
-      case 'Advanced': return 'text-red-600 bg-red-100';
-      default: return 'text-gray-600 bg-gray-100';
-    }
-  };
-
-  const getStatusColor = (status: string) => {
-    switch (status) {
-      case 'assigned': return 'text-blue-600 bg-blue-100';
-      case 'in-progress': return 'text-yellow-600 bg-yellow-100';
-      case 'completed': return 'text-green-600 bg-green-100';
-      case 'submitted': return 'text-purple-600 bg-purple-100';
-      default: return 'text-gray-600 bg-gray-100';
-    }
-  };
-
   if (loading) {
     return (
-      <div className="p-4">
+      <div className="p-6">
         <div className="animate-pulse">
-          <div className="h-4 bg-gray-200 rounded mb-2"></div>
-          <div className="h-10 bg-gray-200 rounded"></div>
+          <div className="h-4 bg-neutral-200 rounded mb-3"></div>
+          <div className="h-10 bg-neutral-200 rounded"></div>
         </div>
       </div>
     );
@@ -50,15 +32,15 @@ const ProjectSelector: React.FC<ProjectSelectorProps> = ({
 
   if (error) {
     return (
-      <div className="p-4">
-        <div className="bg-red-100 border border-red-400 text-red-700 px-3 py-2 rounded mb-3">
-          {error}
+      <div className="p-6">
+        <div className="bg-error-50 border border-error-200 text-error-800 px-4 py-3 rounded-lg mb-4">
+          <p className="text-sm font-medium">{error}</p>
         </div>
         <button
           onClick={onRefresh}
-          className="text-sm bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded transition-colors"
+          className="text-sm bg-blueberry-500 hover:bg-blueberry-600 text-white px-4 py-2 rounded-lg transition-colors font-medium"
         >
-          Retry
+          Try Again
         </button>
       </div>
     );
@@ -66,11 +48,16 @@ const ProjectSelector: React.FC<ProjectSelectorProps> = ({
 
   if (projects.length === 0) {
     return (
-      <div className="p-4 text-center text-gray-500">
-        <p className="mb-2">No projects assigned yet</p>
+      <div className="p-6 text-center">
+        <div className="text-neutral-400 mb-4">
+          <svg className="w-12 h-12 mx-auto mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+          </svg>
+          <p className="text-neutral-600 text-sm">No projects assigned yet</p>
+        </div>
         <button
           onClick={onRefresh}
-          className="text-sm bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded transition-colors"
+          className="text-sm bg-blueberry-500 hover:bg-blueberry-600 text-white px-4 py-2 rounded-lg transition-colors font-medium"
         >
           Refresh
         </button>
@@ -79,57 +66,45 @@ const ProjectSelector: React.FC<ProjectSelectorProps> = ({
   }
 
   return (
-    <div className="p-4">
-      <div className="flex items-center justify-between mb-3">
-        <label className="block text-sm font-medium text-gray-700">
-          Select Project ({projects.length})
-        </label>
+    <div className="p-6 border-b border-neutral-200">
+      <div className="flex items-center justify-between mb-4">
+        <h3 className="text-subtitle text-neutral-800 font-open-sans">
+          Current Project
+        </h3>
         <button
           onClick={onRefresh}
-          className="text-xs text-blue-600 hover:text-blue-800"
+          className="text-blueberry-500 hover:text-blueberry-600 transition-colors"
           title="Refresh projects"
         >
-          ↻ Refresh
+          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+          </svg>
         </button>
       </div>
       
       <select
         value={selectedProject?.projectId || ''}
         onChange={(e) => onSelectProject(e.target.value)}
-        className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+        className="w-full p-3 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-blueberry-500 focus:border-blueberry-500 bg-white text-body font-open-sans transition-colors"
       >
-        <option value="">Choose a project...</option>
+        <option value="" className="text-neutral-500">Choose a project...</option>
         {projects.map((project) => (
           <option key={project.projectId} value={project.projectId}>
-            {project.title} ({project.difficulty})
+            {project.title}
           </option>
         ))}
       </select>
 
       {selectedProject && (
-        <div className="mt-3 p-3 bg-gray-50 rounded-md">
-          <div className="flex flex-wrap gap-2 mb-2">
-            <span className={`px-2 py-1 rounded-full text-xs font-medium ${getDifficultyColor(selectedProject.difficulty)}`}>
-              {selectedProject.difficulty}
-            </span>
-            <span className={`px-2 py-1 rounded-full text-xs font-medium ${getStatusColor(selectedProject.status)}`}>
-              {selectedProject.status}
-            </span>
-            <span className="px-2 py-1 bg-gray-100 text-gray-600 rounded-full text-xs font-medium">
-              {selectedProject.duration}
+        <div className="mt-4 p-4 bg-neutral-50 rounded-lg border border-neutral-200">
+          <div className="flex items-center space-x-2 mb-2">
+            <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blueberry-100 text-blueberry-800">
+              {selectedProject.title}
             </span>
           </div>
-          
-          <h4 className="font-medium text-gray-900 mb-1">{selectedProject.title}</h4>
-          <p className="text-sm text-gray-600 line-clamp-2">{selectedProject.description}</p>
-          
-          {selectedProject.tasks.length > 0 && (
-            <div className="mt-2">
-              <span className="text-xs text-gray-500">
-                Tasks: {selectedProject.tasks.filter(t => t.completed).length}/{selectedProject.tasks.length} completed
-              </span>
-            </div>
-          )}
+          <p className="text-overline text-neutral-500 uppercase tracking-wider font-medium">
+            {projects.length} project{projects.length !== 1 ? 's' : ''} available
+          </p>
         </div>
       )}
     </div>
