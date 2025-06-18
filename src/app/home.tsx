@@ -1,7 +1,10 @@
+// src/app/home.tsx
 import React from 'react';
 import { useAuth } from '../hooks/useAuth';
 import { useProjects } from '../hooks/useProjects';
 import ProjectSelector from '../components/ProjectSelector';
+import ArXivParser from '../components/ArXivParser';
+import { ParsedArXivData, convertToArXivPaper } from '../services/arxivService';
 
 const Home: React.FC = () => {
   const { user, loading, error, signIn, signOut, isAuthenticated } = useAuth();
@@ -14,6 +17,29 @@ const Home: React.FC = () => {
     refreshProjects 
   } = useProjects(user);
 
+  const handleExportPaper = async (paperData: ParsedArXivData) => {
+    if (!user || !selectedProject) {
+      alert('Please select a project and ensure you are signed in.');
+      return;
+    }
+
+    try {
+      // Convert parsed data to ArXivPaper format
+      const arxivPaper = convertToArXivPaper(paperData, user.uid);
+      
+      // For now, just show success message - we'll implement Firebase saving later
+      console.log('Paper to be exported:', arxivPaper);
+      alert(`Paper "${paperData.title}" will be exported to project "${selectedProject.title}"`);
+      
+      // TODO: Implement Firebase save functionality
+      // await saveArXivPaperToProject(selectedProject.projectId, arxivPaper);
+      
+    } catch (error) {
+      console.error('Error exporting paper:', error);
+      alert('Failed to export paper. Please try again.');
+    }
+  };
+
   if (loading) {
     return (
       <div className="w-80 h-96 flex items-center justify-center">
@@ -23,7 +49,7 @@ const Home: React.FC = () => {
   }
 
   return (
-    <div className="w-80 h-96 bg-white">
+    <div className="w-80 min-h-96 bg-white flex flex-col">
       <div className="p-4 border-b border-gray-200">
         <h1 className="text-lg font-bold text-center text-gray-800">
           Project Manager
@@ -47,7 +73,7 @@ const Home: React.FC = () => {
           </button>
         </div>
       ) : (
-        <div className="flex flex-col h-full">
+        <div className="flex flex-col flex-1 overflow-hidden">
           {/* User Info */}
           <div className="p-4 border-b border-gray-100">
             <div className="flex items-center space-x-3">
@@ -71,8 +97,9 @@ const Home: React.FC = () => {
             </div>
           </div>
 
-          {/* Project Selector */}
+          {/* Scrollable Content Area */}
           <div className="flex-1 overflow-y-auto">
+            {/* Project Selector */}
             <ProjectSelector
               projects={projects}
               selectedProject={selectedProject}
@@ -84,12 +111,19 @@ const Home: React.FC = () => {
 
             {/* Quick Actions */}
             {selectedProject && (
-              <div className="p-4 border-t border-gray-100">
+              <div className="px-4 pb-4 border-b border-gray-100">
                 <button className="w-full bg-green-500 hover:bg-green-600 text-white font-medium py-2 px-4 rounded transition-colors">
                   Open Project
                 </button>
               </div>
             )}
+
+            {/* ArXiv Parser */}
+            <ArXivParser
+              selectedProject={selectedProject}
+              user={user}
+              onExportPaper={handleExportPaper}
+            />
           </div>
         </div>
       )}

@@ -1,4 +1,4 @@
-// Background script for Chrome extension (Side Panel Mode)
+// src/background/background.ts
 chrome.runtime.onInstalled.addListener((details: any) => {
   console.log("Extension installed (Side Panel Mode):", details);
 
@@ -92,6 +92,35 @@ chrome.runtime.onMessage.addListener(
             }
           }
         );
+
+        return true; // Keep the message channel open for async response
+
+      case "FETCH_ARXIV_PAGE":
+        // Handle ArXiv page fetching to bypass CORS issues
+        const { url } = message;
+
+        fetch(url)
+          .then((response) => {
+            if (!response.ok) {
+              throw new Error(
+                `HTTP ${response.status}: ${response.statusText}`
+              );
+            }
+            return response.text();
+          })
+          .then((html) => {
+            sendResponse({
+              success: true,
+              data: html,
+            });
+          })
+          .catch((error) => {
+            console.error("Error fetching ArXiv page:", error);
+            sendResponse({
+              success: false,
+              error: error.message,
+            });
+          });
 
         return true; // Keep the message channel open for async response
 
