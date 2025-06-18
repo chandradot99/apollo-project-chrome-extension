@@ -86,7 +86,7 @@ dist/*.zip
 node_modules/**/*.zip
 
 # Allow release packages in root
-!apollo-hack100-chrome-extension-*.zip
+!apollo-research-extension-*.zip
 
 
 # TypeScript cache
