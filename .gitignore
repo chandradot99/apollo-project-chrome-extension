@@ -85,9 +85,6 @@ temp/
 dist/*.zip
 node_modules/**/*.zip
 
-# Allow release packages in root
-!apollo-research-extension-*.zip
-
 
 # TypeScript cache
 *.tsbuildinfo
