@@ -80,7 +80,14 @@ temp/
 # Chrome extension specific
 *.crx
 *.pem
-*.zip
+
+# Ignore build artifacts but allow release packages
+dist/*.zip
+node_modules/**/*.zip
+
+# Allow release packages in root
+!apollo-hack100-chrome-extension-*.zip
+
 
 # TypeScript cache
 *.tsbuildinfo
