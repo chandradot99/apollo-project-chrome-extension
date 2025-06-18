@@ -3,17 +3,14 @@ const HtmlWebpackPlugin = require("html-webpack-plugin");
 const CopyWebpackPlugin = require("copy-webpack-plugin");
 
 module.exports = (env, argv) => {
-  // Determine mode: popup (default) or sidepanel
-  const mode = env.MODE || "popup";
   const isProduction = argv.mode === "production";
 
-  console.log(`Building for mode: ${mode}`);
   console.log(`Environment: ${isProduction ? "production" : "development"}`);
 
   return {
     entry: {
-      popup: "./src/popup/index.tsx",
-      background: `./src/background/background.${mode}.ts`,
+      popup: "./src/app/index.tsx",
+      background: `./src/background/background.ts`,
       content: "./src/content/content.ts",
     },
     output: {
@@ -44,14 +41,14 @@ module.exports = (env, argv) => {
     },
     plugins: [
       new HtmlWebpackPlugin({
-        template: `./src/popup/popup.${mode}.html`,
+        template: `./src/app/index.html`,
         filename: "popup.html",
         chunks: ["popup"],
       }),
       new CopyWebpackPlugin({
         patterns: [
           {
-            from: `./configs/manifest.${mode}.json`,
+            from: `manifest.json`,
             to: "manifest.json",
           },
           {

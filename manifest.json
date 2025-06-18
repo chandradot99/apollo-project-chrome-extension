@@ -15,8 +15,8 @@
   },
   "content_scripts": [
     {
-      "matches": ["https://arxiv.org/abs/*"],
-      "js": ["content/arxivDetector.js"]
+      "matches": ["<all_urls>"],
+      "js": ["content.js"]
     }
   ],
   "icons": {

@@ -4,12 +4,8 @@
   "description": "Chrome extension scaffold with React, TypeScript, and Tailwind CSS - supports both popup and side panel modes",
   "private": true,
   "scripts": {
-    "dev": "webpack --mode development --watch --env MODE=popup",
-    "dev:popup": "webpack --mode development --watch --env MODE=popup",
-    "dev:sidepanel": "webpack --mode development --watch --env MODE=sidepanel",
-    "build": "webpack --mode production --env MODE=popup",
-    "build:popup": "webpack --mode production --env MODE=popup",
-    "build:sidepanel": "webpack --mode production --env MODE=sidepanel",
+    "dev": "webpack --mode development --watch --env MODE=sidepanel",
+    "build": "webpack --mode production --env MODE=sidepanel",
     "type-check": "tsc --noEmit",
     "clean": "rm -rf dist",
     "zip": "npm run clean && npm run build && cd dist && zip -r ../extension.zip ."
