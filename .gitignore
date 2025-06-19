@@ -78,12 +78,8 @@ tmp/
 temp/
 
 # Chrome extension specific
-*.crx
+*.zip
 *.pem
-
-# Ignore build artifacts but allow release packages
-dist/*.zip
-node_modules/**/*.zip
 
 
 # TypeScript cache
