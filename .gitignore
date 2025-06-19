@@ -78,7 +78,7 @@ tmp/
 temp/
 
 # Chrome extension specific
-*.zip
+*.crx
 *.pem
 
 

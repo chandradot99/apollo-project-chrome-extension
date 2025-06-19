@@ -2,6 +2,7 @@
   "manifest_version": 3,
   "name": "Apollo Project Chrome Extension",
   "version": "1.0.0",
+  "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAna9X/sywUA8SKBQykgGR2hvhRZMYsWvmxu7yXBDI9JQ0EX6xpKyp91XwFOu1j2KJaD+tKTrubbZUAokJpzbB5ESet1BOOHOajqhlypO+x/w4/Ewa7rjAyiRU5bxb0cuq7lt8qTDorW86ePhKpOKJnY3Bh8BoiGILU2fa69GAARzIYOf7D6sTrZII2+aqlb1GXLWgpa0H58hIBIjrbLoO7dfYJaf44W3xdwTHR3Sb5zCNp4M1E9t7k3nRRtn9+AEqaEcL2rBgPX2lPM69MxzcOpGE8YdtZ7JOG6ekKHZ7XBHx58ysF5aONQPQt2iC6FddhfKPoI7geZ7RXAkXztTJ0QIDAQAB",
   "description": "A Chrome extension built with React, TypeScript, and Tailwind CSS (Side Panel Mode)",
   "permissions": ["activeTab", "tabs", "storage", "sidePanel", "identity"],
   "action": {
@@ -35,7 +36,7 @@
     "extension_pages": "script-src 'self'; object-src 'self'"
   },
   "oauth2": {
-    "client_id": "486228852542-19ajvl765khvplmrbekddgbqj9b7a1a0.apps.googleusercontent.com",
+    "client_id": "486228852542-5qrj2v7b4m57vr5d94aq1j2an891fubj.apps.googleusercontent.com",
     "scopes": ["openid", "email", "profile"]
   }
 }
