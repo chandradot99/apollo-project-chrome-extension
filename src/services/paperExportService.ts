@@ -16,7 +16,7 @@ export const exportPaperToProject = async (
     const cleanPaperData = cleanObjectForFirestore(paperData);
 
     // Get reference to the project document
-    const projectRef = doc(db, "projects", projectId);
+    const projectRef = doc(db, "assignedProjects", projectId);
 
     // First, check if the project exists and get current resources
     const projectSnap = await getDoc(projectRef);

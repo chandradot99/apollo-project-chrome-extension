@@ -33,7 +33,7 @@ const Home: React.FC = () => {
       const arxivPaper = convertToArXivPaper(paperData, user.uid);
       
       // Export to Firebase
-      await exportPaperToProject(selectedProject.projectId, arxivPaper);
+      await exportPaperToProject(selectedProject.assignedProjectId, arxivPaper);
       
       // Show success notification
       showNotification(`Paper "${paperData.title}" exported to ${selectedProject.title}!`, 'success');
